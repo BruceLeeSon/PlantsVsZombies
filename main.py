@@ -1,5 +1,6 @@
 import arcade
 import random
+import plants
 
 
 SCREEN_WIDTH = 1000
@@ -14,6 +15,7 @@ class Game(arcade.Window):
         self.bg = arcade.load_texture("textures/background.jpg")
         self.menu = arcade.load_texture("textures/menu_vertical.png")
 
+        self.plants = arcade.SpriteList()
 
 
     def setup(self):
@@ -32,10 +34,10 @@ class Game(arcade.Window):
         if 16 <= x <= 116:
             print(y)
             if 370 <= y <= 480:
-                print("#1")
+                print("Sunflower")
 
             if 255 <= y <= 365:
-                print("#2")
+                print("Wallnut")
 
             if 140 <= y <= 250:
                 print("#3")
