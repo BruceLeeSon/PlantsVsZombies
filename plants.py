@@ -4,7 +4,7 @@ import animate
 
 class Plant(animate.Animate):
     def __init__(self, image, health, cost):
-        super.__init__(image, 0.12)
+        super().__init__(image, 0.12)
 
         self.health = health
         self.cost = cost

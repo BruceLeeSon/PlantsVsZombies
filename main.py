@@ -2,10 +2,34 @@ import arcade
 import random
 import plants
 
-
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Plants vs Zombies"
+
+CELL_WIDTH = 78
+CELL_HEIGHT = 100
+
+
+def lawn_x(x):
+    right_x = 248 + CELL_WIDTH
+    column = 1
+    while right_x <= x:
+        right_x += CELL_WIDTH
+        column += 1
+
+    center_x = right_x - CELL_WIDTH / 2
+    return center_x, column
+
+def lawn_y(y):
+    up_y = 24 + CELL_HEIGHT
+    lane = 1
+    while up_y <= y:
+        up_y += CELL_HEIGHT
+        lane += 1
+
+    center_y = up_y - CELL_HEIGHT / 2
+    return center_y, lane
+
 
 class Game(arcade.Window):
 
@@ -17,6 +41,7 @@ class Game(arcade.Window):
 
         self.plants = arcade.SpriteList()
 
+        self.seed = None
 
     def setup(self):
         pass
@@ -25,16 +50,22 @@ class Game(arcade.Window):
         self.clear((255, 255, 255))
         arcade.draw_texture_rectangle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.bg)
         arcade.draw_texture_rectangle(67, SCREEN_HEIGHT / 2, 134, SCREEN_HEIGHT, self.menu)
+        self.plants.draw()
+        if self.seed is not None:
+            self.seed.draw()
 
     def update(self, delta_time):
-        pass
+        self.plants.update()
+        self.plants.update_animation(delta_time)
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        # print(x,y)
+        print(x,y)
         if 16 <= x <= 116:
             print(y)
             if 370 <= y <= 480:
                 print("Sunflower")
+                self.seed = plants.Sunflower()
+
 
             if 255 <= y <= 365:
                 print("Wallnut")
@@ -44,14 +75,26 @@ class Game(arcade.Window):
 
             if 25 <= y <= 135:
                 print("#4")
+
+            if self.seed is not None:
+                self.seed.center_x = x
+                self.seed.center_y = y
+                self.seed.alpha = 150
+
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
-        pass
+        if self.seed is not None:
+            self.seed.center_x = x
+            self.seed.center_y = y
 
     def on_mouse_release(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        if 248 <= x <= 950 and 24 <= y <= 524 and self.seed is not None:
+            center_x, column = lawn_x(x)
+            center_y, lane = lawn_y(y)
 
-
-
+            self.seed.planting(center_x, center_y, lane, column)
+            self.seed.alpha = 255
+            self.plants.append(self.seed)
+            self.seed = None
 
 window = Game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
