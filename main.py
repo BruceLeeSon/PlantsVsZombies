@@ -42,6 +42,8 @@ class Game(arcade.Window):
         self.plants = arcade.SpriteList()
 
         self.seed = None
+        self.lawns = []
+        self.sun = 300
 
     def setup(self):
         pass
@@ -53,6 +55,8 @@ class Game(arcade.Window):
         self.plants.draw()
         if self.seed is not None:
             self.seed.draw()
+
+        arcade.draw_text(str(self.sun), 34, 490, (165, 42, 42), 30)
 
     def update(self, delta_time):
         self.plants.update()
@@ -91,10 +95,21 @@ class Game(arcade.Window):
             center_x, column = lawn_x(x)
             center_y, lane = lawn_y(y)
 
+            if (lane, column) in self.lawns:
+                self.seed = None
+                return
+
+            self.lawns.append((lane, column))
+            print(self.lawns)
+
+            self.sun -= self.seed.cost
             self.seed.planting(center_x, center_y, lane, column)
             self.seed.alpha = 255
             self.plants.append(self.seed)
             self.seed = None
+        else:
+            self.seed = None
+
 
 window = Game(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
