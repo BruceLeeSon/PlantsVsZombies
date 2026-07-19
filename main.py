@@ -20,6 +20,7 @@ def lawn_x(x):
     center_x = right_x - CELL_WIDTH / 2
     return center_x, column
 
+
 def lawn_y(y):
     up_y = 24 + CELL_HEIGHT
     lane = 1
@@ -40,10 +41,13 @@ class Game(arcade.Window):
         self.menu = arcade.load_texture("textures/menu_vertical.png")
 
         self.plants = arcade.SpriteList()
+        self.suns = arcade.SpriteList()
 
         self.seed = None
         self.lawns = []
         self.sun = 300
+
+        self.seed_sound = arcade.load_sound("sounds/seed.mp3")
 
     def setup(self):
         pass
@@ -52,7 +56,10 @@ class Game(arcade.Window):
         self.clear((255, 255, 255))
         arcade.draw_texture_rectangle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.bg)
         arcade.draw_texture_rectangle(67, SCREEN_HEIGHT / 2, 134, SCREEN_HEIGHT, self.menu)
+
         self.plants.draw()
+        self.suns.draw()
+
         if self.seed is not None:
             self.seed.draw()
 
@@ -63,13 +70,12 @@ class Game(arcade.Window):
         self.plants.update_animation(delta_time)
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        print(x,y)
+        print(x, y)
         if 16 <= x <= 116:
             print(y)
             if 370 <= y <= 480:
                 print("Sunflower")
-                self.seed = plants.Sunflower()
-
+                self.seed = plants.Sunflower(self)
 
             if 255 <= y <= 365:
                 print("Wallnut")
@@ -85,6 +91,11 @@ class Game(arcade.Window):
                 self.seed.center_y = y
                 self.seed.alpha = 150
 
+        for sun in self.suns:
+            if sun.left <= x <= sun.right and sun.bottom <= y <= sun.top:
+                sun.kill()
+                self.sun += 25
+
     def on_mouse_motion(self, x: int, y: int, dx: int, dy: int):
         if self.seed is not None:
             self.seed.center_x = x
@@ -95,7 +106,7 @@ class Game(arcade.Window):
             center_x, column = lawn_x(x)
             center_y, lane = lawn_y(y)
 
-            if (lane, column) in self.lawns:
+            if (lane, column) in self.lawns or self.sun < self.seed.cost:
                 self.seed = None
                 return
 
@@ -107,6 +118,8 @@ class Game(arcade.Window):
             self.seed.alpha = 255
             self.plants.append(self.seed)
             self.seed = None
+
+            arcade.play_sound(self.seed_sound)
         else:
             self.seed = None
 
