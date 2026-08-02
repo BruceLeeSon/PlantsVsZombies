@@ -40,3 +40,17 @@ class Sunflower(Plant):
             self.window.suns.append(new_sun)
 
         self.window.suns.update()
+
+class PeaShooter(Plant):
+    def __init__(self):
+        super().__init__("plants/pea1.png", health=100, cost=100)
+        for i in range(3):
+            self.append_texture(arcade.load_texture(f"plants/pea{i+1}.png"))
+
+
+class Pea(arcade.Sprite):
+    def __init__(self, center_x, center_y):
+        super().__init__("items/bul.png", 0.12)
+        self.set_position(center_x, center_y)
+        self.change_x = 7
+        self.damage = 1

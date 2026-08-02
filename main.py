@@ -1,14 +1,7 @@
 import arcade
 import random
 import plants
-
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Plants vs Zombies"
-
-CELL_WIDTH = 78
-CELL_HEIGHT = 100
-
+from constants import *
 
 def lawn_x(x):
     right_x = 248 + CELL_WIDTH
@@ -78,10 +71,11 @@ class Game(arcade.Window):
                 self.seed = plants.Sunflower(self)
 
             if 255 <= y <= 365:
-                print("Wallnut")
+                print("PeaShooter")
+                self.seed = plants.PeaShooter()
 
             if 140 <= y <= 250:
-                print("#3")
+                print("Wallnut")
 
             if 25 <= y <= 135:
                 print("#4")
