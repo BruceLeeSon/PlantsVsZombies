@@ -2,6 +2,8 @@ import arcade
 import animate
 import time
 import sun
+from constants import SCREEN_WIDTH
+
 
 class Plant(animate.Animate):
     def __init__(self, image, health, cost):
@@ -42,11 +44,22 @@ class Sunflower(Plant):
         self.window.suns.update()
 
 class PeaShooter(Plant):
-    def __init__(self):
+    def __init__(self, window):
         super().__init__("plants/pea1.png", health=100, cost=100)
+        self.pea_spawntime = time.time()
+        self.window = window
+
         for i in range(3):
             self.append_texture(arcade.load_texture(f"plants/pea{i+1}.png"))
 
+    def update(self):
+        zombie_on_line = False
+
+        if time.time() - self.pea_spawntime >= 2 and zombie_on_line:
+            new_pea = Pea(self.right, self.top - 15)
+            self.pea_spawntime = time.time()
+
+            self.window.peas.append(new_pea)
 
 class Pea(arcade.Sprite):
     def __init__(self, center_x, center_y):
@@ -54,3 +67,8 @@ class Pea(arcade.Sprite):
         self.set_position(center_x, center_y)
         self.change_x = 7
         self.damage = 1
+
+    def update(self):
+        self.center_x += self.change_x
+        if self.center_x > SCREEN_WIDTH:
+            self.kill()

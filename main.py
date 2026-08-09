@@ -35,6 +35,7 @@ class Game(arcade.Window):
 
         self.plants = arcade.SpriteList()
         self.suns = arcade.SpriteList()
+        self.peas = arcade.SpriteList()
 
         self.seed = None
         self.lawns = []
@@ -52,6 +53,7 @@ class Game(arcade.Window):
 
         self.plants.draw()
         self.suns.draw()
+        self.peas.draw()
 
         if self.seed is not None:
             self.seed.draw()
@@ -61,6 +63,7 @@ class Game(arcade.Window):
     def update(self, delta_time):
         self.plants.update()
         self.plants.update_animation(delta_time)
+        self.peas.update()
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
         print(x, y)
@@ -72,7 +75,7 @@ class Game(arcade.Window):
 
             if 255 <= y <= 365:
                 print("PeaShooter")
-                self.seed = plants.PeaShooter()
+                self.seed = plants.PeaShooter(self)
 
             if 140 <= y <= 250:
                 print("Wallnut")
