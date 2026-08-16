@@ -1,3 +1,5 @@
+import time
+import zombies
 import arcade
 import random
 import plants
@@ -36,10 +38,13 @@ class Game(arcade.Window):
         self.plants = arcade.SpriteList()
         self.suns = arcade.SpriteList()
         self.peas = arcade.SpriteList()
+        self.zombies = arcade.SpriteList()
+
 
         self.seed = None
         self.lawns = []
         self.sun = 300
+        self.zombie_spawn_time = time.time()
 
         self.seed_sound = arcade.load_sound("sounds/seed.mp3")
 
@@ -54,6 +59,7 @@ class Game(arcade.Window):
         self.plants.draw()
         self.suns.draw()
         self.peas.draw()
+        self.zombies.draw()
 
         if self.seed is not None:
             self.seed.draw()
@@ -64,6 +70,14 @@ class Game(arcade.Window):
         self.plants.update()
         self.plants.update_animation(delta_time)
         self.peas.update()
+        self.zombies.update()
+        self.zombies.update_animation(delta_time)
+
+        if time.time() - self.zombie_spawn_time > 5:
+            self.zombie_spawn_time = time.time()
+            center_y, row = lawn_y(random.randint(24,524))
+            zombie = zombies.SimpleZombie(row, center_y)
+            self.zombies.append(zombie)
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
         print(x, y)

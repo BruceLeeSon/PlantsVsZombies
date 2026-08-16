@@ -7,10 +7,10 @@ from constants import SCREEN_WIDTH
 
 class Zombie(animate.Animate):
     def __init__(self, image, health, row, center_y):
-        super().__init__(image, 0.09)
+        super().__init__(image, 0.8)
         self.health = health
         self.row = row
-        self.set_position(SCREEN_WIDTH, center_y)
+        self.set_position(SCREEN_WIDTH, center_y + 15)
         self.change_x = 0.2
 
     def update(self):

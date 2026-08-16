@@ -55,6 +55,11 @@ class PeaShooter(Plant):
     def update(self):
         zombie_on_line = False
 
+        for zombie in self.window.zombies:
+            if zombie.row == self.row:
+                zombie_on_line = True
+                break
+
         if time.time() - self.pea_spawntime >= 2 and zombie_on_line:
             new_pea = Pea(self.right, self.top - 15)
             self.pea_spawntime = time.time()
