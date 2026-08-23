@@ -1,7 +1,10 @@
 import arcade
+from arcade import check_for_collision_with_list
+
 import animate
 import time
 import sun
+import zombies
 from constants import SCREEN_WIDTH
 
 
@@ -61,19 +64,24 @@ class PeaShooter(Plant):
                 break
 
         if time.time() - self.pea_spawntime >= 2 and zombie_on_line:
-            new_pea = Pea(self.right, self.top - 15)
+            new_pea = Pea(self.right, self.top - 15, self.window)
             self.pea_spawntime = time.time()
 
             self.window.peas.append(new_pea)
 
 class Pea(arcade.Sprite):
-    def __init__(self, center_x, center_y):
+    def __init__(self, center_x, center_y, window):
         super().__init__("items/bul.png", 0.12)
         self.set_position(center_x, center_y)
         self.change_x = 7
         self.damage = 1
+        self.window = window
 
     def update(self):
         self.center_x += self.change_x
         if self.center_x > SCREEN_WIDTH:
+            self.kill()
+        zombies = check_for_collision_with_list(self, self.window.zombies)
+        for zombie in zombies:
+            zombie.health -= self.damage
             self.kill()
