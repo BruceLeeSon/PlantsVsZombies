@@ -73,7 +73,7 @@ class Game(arcade.Window):
         self.zombies.update()
         self.zombies.update_animation(delta_time)
 
-        if time.time() - self.zombie_spawn_time > 5:
+        if time.time() - self.zombie_spawn_time > 15:
             self.zombie_spawn_time = time.time()
             center_y, row = lawn_y(random.randint(24,524))
             zombie = zombies.SimpleZombie(row, center_y)
@@ -93,7 +93,7 @@ class Game(arcade.Window):
 
             if 140 <= y <= 250:
                 print("Wallnut")
-
+                self.seed = plants.WallNut()
             if 25 <= y <= 135:
                 print("#4")
 

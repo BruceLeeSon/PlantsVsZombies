@@ -85,3 +85,10 @@ class Pea(arcade.Sprite):
         for zombie in zombies:
             zombie.health -= self.damage
             self.kill()
+
+
+class WallNut(Plant):
+    def __init__(self):
+        super().__init__("plants/nut1.png", 200, 50)
+        for i in range(1, 4):
+            self.append_texture(arcade.load_texture(f"plants/nut{i}.png"))
