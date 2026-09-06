@@ -76,7 +76,7 @@ class Game(arcade.Window):
         if time.time() - self.zombie_spawn_time > 15:
             self.zombie_spawn_time = time.time()
             center_y, row = lawn_y(random.randint(24,524))
-            zombie = zombies.SimpleZombie(row, center_y)
+            zombie = zombies.SimpleZombie(row, center_y, self)
             self.zombies.append(zombie)
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
