@@ -31,6 +31,7 @@ class Zombie(animate.Animate):
             if self.row == plant.row:
                 self.eating = True
                 plant.health -= 0.5
+                print(plant.health, plant.row, plant.column)
 
 
 
@@ -39,3 +40,10 @@ class SimpleZombie(Zombie):
         super().__init__("zombies/OrdinaryZombie/Zombie_0.png", 12, row, center_y, window)
         for zombies in range(22):
             self.append_texture(arcade.load_texture(f"zombies/OrdinaryZombie/Zombie_{zombies}.png"))
+
+
+class ConeHeadZombie(Zombie):
+    def __init__(self, row, center_y, window):
+        super().__init__("zombies/ConeheadZombie/ConeheadZombie_0.png", 20, row, center_y, window)
+        for czombies in range(21):
+            self.append_texture(arcade.load_texture(f"zombies/ConeheadZombie/ConeheadZombie_{czombies}.png"))

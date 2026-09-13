@@ -73,11 +73,19 @@ class Game(arcade.Window):
         self.zombies.update()
         self.zombies.update_animation(delta_time)
 
+
         if time.time() - self.zombie_spawn_time > 15:
             self.zombie_spawn_time = time.time()
             center_y, row = lawn_y(random.randint(24,524))
-            zombie = zombies.SimpleZombie(row, center_y, self)
-            self.zombies.append(zombie)
+
+            chance = random.randint(1, 2)
+
+            if chance == 1:
+                zombie = zombies.SimpleZombie(row, center_y, self)
+                self.zombies.append(zombie)
+            else:
+                zombie = zombies.ConeHeadZombie(row, center_y, self)
+                self.zombies.append(zombie)
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
         print(x, y)
@@ -93,7 +101,7 @@ class Game(arcade.Window):
 
             if 140 <= y <= 250:
                 print("Wallnut")
-                self.seed = plants.WallNut()
+                self.seed = plants.WallNut(self)
             if 25 <= y <= 135:
                 print("#4")
 
